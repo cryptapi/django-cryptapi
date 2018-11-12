@@ -34,26 +34,28 @@ class CallbackDispatcher:
                     value=self.payment['value']
                 )
 
-                total_received = self.payment['value']
+                if request.status not in ['received', 'done']:
 
-                if total_received < request.value_requested:
-                    total_received_list = request.payment_set.all().values_list('value_paid', flat=True)
-                    total_received = sum(total_received_list)
+                    total_received = self.payment['value']
 
-                if total_received < request.value_requested:
-                    request.status = 'insufficient'
-                else:
-                    request.status = 'received'
+                    if total_received < request.value_requested:
+                        total_received_list = request.payment_set.all().values_list('value_paid', flat=True)
+                        total_received = sum(total_received_list)
 
-                    # Notify payment complete
-                    payment_complete.send_robust(
-                        sender=self.__class__,
-                        order_id=request.order_id,
-                        payment=payment,
-                        value=total_received
-                    )
+                    if total_received < request.value_requested:
+                        request.status = 'insufficient'
+                    else:
+                        request.status = 'received'
 
-                request.save()
+                        # Notify payment complete
+                        payment_complete.send_robust(
+                            sender=self.__class__,
+                            order_id=request.order_id,
+                            payment=payment,
+                            value=total_received
+                        )
+
+                    request.save()
 
                 pl = PaymentLog(
                     payment=payment,
@@ -61,6 +63,10 @@ class CallbackDispatcher:
                 )
 
                 pl.save()
+
+                if request.status not in ['done']:
+                    request.status = 'done'
+                    request.save()
 
                 return True
 

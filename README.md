@@ -45,7 +45,7 @@ Add CryptAPI's URLs to your project's urls.py file:
 
 ```
 urlpatterns = [
-    path('cryptapi/', include('cryptapi.urls'),
+    path('cryptapi/', include('cryptapi.urls')),
     ...
 ]
 ```

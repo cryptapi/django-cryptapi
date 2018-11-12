@@ -16,7 +16,7 @@ class Provider(models.Model):
 class Request(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.SET_NULL, null=True)
     order_id = models.CharField(_('Order ID'), default='', max_length=128)
-    nonce = models.CharField(_('Nonce'), max_length=32, default='', unique=True)
+    nonce = models.CharField(_('Nonce'), max_length=32, default='')
     address_in = models.CharField(_('Payment Address'), max_length=128, default='', null=True)
     address_out = models.CharField(_('Receiving Address'), max_length=128, default='', null=True)
     value_requested = models.DecimalField(_('Value Requested'), default=0, max_digits=65, decimal_places=0)

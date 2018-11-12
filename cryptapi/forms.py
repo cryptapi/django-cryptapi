@@ -29,7 +29,7 @@ class AddressCreatedForm(forms.Form):
         super(AddressCreatedForm, self).__init__(*args, **kwargs)
         self.initials = initials
 
-    def clean_address_in(self):
+    def clean_address_out(self):
         if self.cleaned_data['address_out'] != self.initials['address_out']:
             raise forms.ValidationError
 

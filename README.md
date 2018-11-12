@@ -21,6 +21,7 @@ pip install django-cryptapi
 
 
 [on pypi](https://pypi.python.org/pypi/django-cryptapi)
+or
 [on GitHub](https://github.com/cryptapi/django-cryptapi)
 
 Add to INSTALLED_APPS:
@@ -53,7 +54,7 @@ urlpatterns = [
 
 After the installation you need to set up Providers for each coin you wish to accept.
 
-To do that you need to go into your Django Admin and create a new CryptAPI ``Provider`` for each coin with your cold wallet address where the funds will be forwarded to.
+You need to go into your Django Admin and create a new CryptAPI ``Provider`` for each coin with your cold wallet address where the funds will be forwarded to.
 
 ## Usage
 
@@ -78,13 +79,15 @@ def order_creation_view(request):
     if payment_address is not None:
         # Show the payment address to the user
         ...
+    else:
+        # Handle request error, check RequestLogs on Admin
 ```
 
 Where:
 
 ``request`` is Django's view HttpRequest object  
-``order_id`` is quite self explanatory, is just your order id  
-``coin`` is a string of the coin you wish to use, can be one of: ``['btc', 'eth', 'bch', 'ltc', 'iota']`` and you need to have a ``Provider`` set up for that coin.  
+``order_id`` is just your order id  
+``coin`` is the coin you wish to use, can be one of: ``['btc', 'eth', 'bch', 'ltc', 'iota']`` and you need to have a ``Provider`` set up for that coin.  
 ``value`` is an integer of the value of your order, either in satoshi, litoshi, wei or IOTA
 
 
@@ -96,14 +99,14 @@ from cryptapi.signals import payment_complete
 
 @receiver(payment_complete)
 def payment_received(order_id, payment, value):
-    # Handle your logic to mark the order as paid and release the goods to the user
+    # Implement your logic to mark the order as paid and release the goods to the user
     ...
 ```
 
 Where:  
 
 ``order_id`` is the id of the order that you provided earlier, used to fetch your order  
-``payment`` is an ``cryptapi.models.Payment`` object with the payment details, such as TXID, etc
+``payment`` is an ``cryptapi.models.Payment`` object with the payment details, such as TXID, number of confirmations, etc.  
 ``value`` is the value the user paid, either in satoshi, litoshi, wei or IOTA
 
 

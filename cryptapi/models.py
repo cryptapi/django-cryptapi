@@ -9,6 +9,9 @@ class Provider(models.Model):
     active = models.BooleanField(_('Active'), default=True)
     last_updated = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return "{}".format(self.get_coin_display())
+
 
 class Request(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.SET_NULL, null=True)
@@ -20,6 +23,9 @@ class Request(models.Model):
     status = models.CharField(_('Status'), choices=STATUS, max_length=16, default='', null=True)
     raw_request_url = models.CharField(_('Request URL'), max_length=8192, default='', null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "#{} {} ({})".format(self.order_id, self.get_status_display(), self.timestamp.strftime('%x %X'))
 
     class Meta:
         unique_together = (('provider', 'order_id'),)
@@ -34,14 +40,23 @@ class Payment(models.Model):
     confirmations = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return "#{} {} ({})".format(self.request.order_id, self.value_paid, self.timestamp.strftime('%x %X'))
+
 
 class RequestLog(models.Model):
     request = models.ForeignKey(Request, on_delete=models.SET_NULL, null=True)
     raw_data = models.CharField(max_length=16384)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return "#{} ({})".format(self.request_id, self.timestamp.strftime('%x %X'))
+
 
 class PaymentLog(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True)
     raw_data = models.CharField(max_length=16384)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "#{} ({})".format(self.payment_id, self.timestamp.strftime('%x %X'))

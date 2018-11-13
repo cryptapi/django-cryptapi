@@ -31,12 +31,12 @@ class CallbackDispatcher:
                     sender=self.__class__,
                     order_id=request.order_id,
                     payment=payment,
-                    value=self.payment['value']
+                    value=self.payment['value_paid']
                 )
 
                 if request.status not in ['received', 'done']:
 
-                    total_received = self.payment['value']
+                    total_received = self.payment['value_paid']
 
                     if total_received < request.value_requested:
                         total_received_list = request.payment_set.all().values_list('value_paid', flat=True)
@@ -64,7 +64,7 @@ class CallbackDispatcher:
 
                 pl.save()
 
-                if request.status not in ['done']:
+                if request.status in ['received']:
                     request.status = 'done'
                     request.save()
 

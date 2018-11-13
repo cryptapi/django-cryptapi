@@ -15,8 +15,8 @@ class CallbackDispatcher:
 
         try:
             request = Request.objects.get(
-                **self.request,
                 provider__coin=self.coin,
+                **self.request
             )
 
             payment, created = request.payment_set.get_or_create(txid_in=self.txid_in)

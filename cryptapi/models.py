@@ -41,7 +41,7 @@ class Payment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "#{}, {} ({})".format(self.request.id, self.value_paid, self.timestamp.strftime('%x %X'))
+        return "#{}, {}, {} ({})".format(self.request.id, self.value_paid, self.request.provider.get_coin_display(), self.timestamp.strftime('%x %X'))
 
 
 class RequestLog(models.Model):

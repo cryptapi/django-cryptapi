@@ -21,18 +21,17 @@ def callback(_r):
         }
 
         # Payment data
-        txid_in = form.cleaned_data.get('txid_in')
-
         payment = {
+            'txid_in': form.cleaned_data.get('txid_in'),
+            'txid_out': form.cleaned_data.get('txid_out'),
             'value_paid': form.cleaned_data.get('value'),
             'value_received': form.cleaned_data.get('value_forwarded'),
-            'txid_out': form.cleaned_data.get('txid_out'),
             'confirmations': form.cleaned_data.get('confirmations'),
         }
 
         raw_data = json.dumps(_r.GET)
 
-        dispatcher = CallbackDispatcher(coin, request, txid_in, payment, raw_data)
+        dispatcher = CallbackDispatcher(coin, request, payment, raw_data)
 
         if dispatcher.callback():
             return HttpResponse('*ok*')

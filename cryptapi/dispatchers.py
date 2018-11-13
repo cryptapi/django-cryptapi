@@ -1,9 +1,8 @@
 
 class CallbackDispatcher:
 
-    def __init__(self, coin, request, txid_in, payment, raw_data):
+    def __init__(self, coin, request, payment, raw_data):
         self.coin = coin
-        self.txid_in = txid_in
         self.request = request
         self.payment = payment
         self.raw_data = raw_data
@@ -16,10 +15,11 @@ class CallbackDispatcher:
         try:
             request = Request.objects.get(
                 provider__coin=self.coin,
-                **self.request
+                id=self.request['id'],
+                nonce=self.request['nonce'],
             )
 
-            payment, created = request.payment_set.get_or_create(txid_in=self.txid_in)
+            payment, created = request.payment_set.get_or_create(txid_in__iexact=self.payment['txid_in'])
 
             if created:
                 [setattr(payment, k, v) for k, v in self.payment.items()]
@@ -68,7 +68,7 @@ class CallbackDispatcher:
                     request.status = 'done'
                     request.save()
 
-                return True
+            return True
 
         except Request.DoesNotExist:
             pass

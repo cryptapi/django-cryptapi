@@ -25,7 +25,7 @@ class Request(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "#{} {} ({})".format(self.order_id, self.get_status_display(), self.timestamp.strftime('%x %X'))
+        return "#{}, {}#{}, {} ({})".format(self.id, _('Order'), self.order_id, self.get_status_display(), self.timestamp.strftime('%x %X'))
 
     class Meta:
         unique_together = (('provider', 'order_id'),)
@@ -41,7 +41,7 @@ class Payment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "#{} {} ({})".format(self.request.order_id, self.value_paid, self.timestamp.strftime('%x %X'))
+        return "#{}, {} ({})".format(self.request.id, self.value_paid, self.timestamp.strftime('%x %X'))
 
 
 class RequestLog(models.Model):

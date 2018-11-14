@@ -118,6 +118,15 @@ This library has a couple of helpers to help you get started
 
 ``cryptapi.get_order_invoices(order_id)`` returns a list of ``cryptapi.models.Request`` objects of your order (you can have multiple objects for the same order if the user mistakenly initiated the payment with another coin)
 
+
+There's also some template tags which you can import to help you with conversions and the protocols.
+You just need to load ``cryptapi_helper`` on your template and use the following tags / filters:  
+
+``{% convert_value coin value %}`` where the coin is one of ``['btc', 'eth', 'bch', 'ltc', 'iota']`` and the value is the value in satoshi, litoshi, wei or IOTA, will convert to the main coin denomination.  
+
+
+``{{ coin|coin_name }}`` will output the properly formatted cryptocurrency name  
+
 ## Help
 
 Need help?  

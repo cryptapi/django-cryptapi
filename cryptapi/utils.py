@@ -1,17 +1,6 @@
-import random
-import string
 import requests
 from django.shortcuts import reverse
 from cryptapi.config import CRYPTAPI_URL
-
-
-COIN_MULTIPLIERS = {
-    'btc': 100000000,
-    'bch': 100000000,
-    'ltc': 100000000,
-    'eth': 1000000000000000000,
-    'iota': 1000000,
-}
 
 
 def build_callback_url(_r, params):
@@ -53,18 +42,3 @@ def get_order_request(order_id):
 
     return Request.objects.filter(order_id=order_id)
 
-
-def get_coin_multiplier(coin, default=None):
-    return COIN_MULTIPLIERS.get(coin, default)
-
-
-# Helpers
-
-
-def generate_nonce(length=32):
-
-    # Not cryptographically secure, but good enough for generating nonces
-
-    sequence = string.ascii_letters + string.digits
-
-    return ''.join([random.choice(sequence) for i in range(length)])

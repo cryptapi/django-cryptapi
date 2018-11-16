@@ -87,7 +87,8 @@ class RequestDispatcher:
     def address(self):
 
         from cryptapi.models import Request, Provider, RequestLog
-        from cryptapi.utils import build_callback_url, generate_nonce, process_request
+        from cryptapi.utils import build_callback_url, process_request
+        from cryptapi.helpers import generate_nonce
         from cryptapi.forms import AddressCreatedForm
 
         try:

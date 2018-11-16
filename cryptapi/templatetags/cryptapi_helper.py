@@ -1,4 +1,5 @@
 from django import template
+from cryptapi.utils import get_coin_multiplier
 
 register = template.Library()
 
@@ -7,15 +8,10 @@ register = template.Library()
 def convert_value(coin, value):
 
     _rounded = 0
+    multiplier = get_coin_multiplier(coin, default=None)
 
-    if coin == 'btc' or coin == 'ltc' or coin == 'bch':
-        _rounded = value / 100000000
-
-    if coin == 'eth':
-        _rounded = value / 1000000000000000000
-
-    if coin == 'iota':
-        _rounded = value / 1000000
+    if multiplier:
+        _rounded = value / multiplier
 
     return '{}'.format(_rounded).rstrip('0')
 

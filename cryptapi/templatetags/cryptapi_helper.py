@@ -1,5 +1,5 @@
 from django import template
-from cryptapi.utils import get_coin_multiplier
+from cryptapi.helpers import get_coin_multiplier
 
 register = template.Library()
 

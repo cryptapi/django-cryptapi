@@ -28,9 +28,9 @@ Add to INSTALLED_APPS:
 
 ```
 INSTALLED_APPS = (
-     'cryptapi',
-     ...
-     )
+    'cryptapi',
+    ...
+)
 ```
 
 

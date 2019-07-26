@@ -2,7 +2,7 @@ from django import forms
 from .choices import COINS
 
 
-class CallbackForm(forms.Form):
+class BaseCallbackForm(forms.Form):
 
     # Request data
     request_id = forms.IntegerField()
@@ -13,9 +13,13 @@ class CallbackForm(forms.Form):
 
     # Payment data
     txid_in = forms.CharField(max_length=256)
-    txid_out = forms.CharField(max_length=256)
     confirmations = forms.IntegerField()
     value = forms.DecimalField(max_digits=65, decimal_places=0)
+
+
+class CallbackForm(BaseCallbackForm):
+    # Payment data
+    txid_out = forms.CharField(max_length=256)
     value_forwarded = forms.DecimalField(max_digits=65, decimal_places=0)
 
 

@@ -1,16 +1,17 @@
 
 class CallbackDispatcher:
 
-    def __init__(self, coin, request, payment, raw_data):
+    def __init__(self, coin, request, payment, raw_data, pending=False):
         self.coin = coin
         self.request = request
         self.payment = payment
         self.raw_data = raw_data
+        self.pending = pending
 
     def callback(self):
 
         from cryptapi.models import Request, PaymentLog
-        from cryptapi.signals import payment_received, payment_complete
+        from cryptapi.signals import payment_received, payment_complete, payment_pending
 
         try:
             request = Request.objects.get(
@@ -21,10 +22,23 @@ class CallbackDispatcher:
 
             payment, created = request.payment_set.get_or_create(txid_in__iexact=self.payment['txid_in'])
 
-            if created:
-                [setattr(payment, k, v) for k, v in self.payment.items()]
+            [setattr(payment, k, v) for k, v in self.payment.items()]
 
-                payment.save()
+            payment.pending = self.pending
+            payment.save()
+
+            if self.pending:
+                payment_pending.send_robust(
+                    sender=self.__class__,
+                    order_id=request.order_id,
+                    payment=payment,
+                    value=self.payment['value_paid']
+                )
+
+                request.status = 'pending'
+                request.save()
+
+            else:
 
                 # Notify payment received
                 payment_received.send_robust(
@@ -39,7 +53,7 @@ class CallbackDispatcher:
                     total_received = self.payment['value_paid']
 
                     if total_received < request.value_requested:
-                        total_received_list = request.payment_set.all().values_list('value_paid', flat=True)
+                        total_received_list = request.payment_set.filter(pending=False).values_list('value_paid', flat=True)
                         total_received = sum(total_received_list)
 
                     if total_received < request.value_requested:
@@ -57,16 +71,16 @@ class CallbackDispatcher:
 
                     request.save()
 
-                pl = PaymentLog(
-                    payment=payment,
-                    raw_data=self.raw_data
-                )
+            pl = PaymentLog(
+                payment=payment,
+                raw_data=self.raw_data
+            )
 
-                pl.save()
+            pl.save()
 
-                if request.status in ['received']:
-                    request.status = 'done'
-                    request.save()
+            if request.status in ['received']:
+                request.status = 'done'
+                request.save()
 
             return True
 
@@ -110,7 +124,8 @@ class RequestDispatcher:
 
                 params = {
                     'callback': cb_url,
-                    'address': provider.cold_wallet
+                    'address': provider.cold_wallet,
+                    'pending': 1,
                 }
 
                 raw_response = process_request(self.coin, 'create', params)

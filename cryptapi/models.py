@@ -37,6 +37,7 @@ class Payment(models.Model):
     value_received = models.DecimalField(_('Value Received'), default=0, max_digits=65, decimal_places=0)
     txid_in = models.CharField(_('TXID in'), max_length=256, default='')
     txid_out = models.CharField(_('TXID out'), max_length=256, default='')
+    pending = models.BooleanField(default=True)
     confirmations = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
 

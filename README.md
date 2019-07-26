@@ -87,8 +87,8 @@ Where:
 
 ``request`` is Django's view HttpRequest object  
 ``order_id`` is just your order id  
-``coin`` is the coin you wish to use, can be one of: ``['btc', 'eth', 'bch', 'ltc', 'iota']`` and you need to have a ``Provider`` set up for that coin.  
-``value`` is an integer of the value of your order, either in satoshi, litoshi, wei or IOTA
+``coin`` is the coin you wish to use, can be one of: ``['btc', 'eth', 'bch', 'ltc', 'xmr', 'iota']`` and you need to have a ``Provider`` set up for that coin.  
+``value`` is an integer of the value of your order, either in satoshi, litoshi, wei, piconero or IOTA
 
 
 ### Getting notified when the user pays
@@ -122,7 +122,7 @@ This library has a couple of helpers to help you get started
 There's also some template tags which you can import to help you with conversions and the protocols.
 You just need to load ``cryptapi_helper`` on your template and use the following tags / filters:  
 
-``{% convert_value coin value %}`` where the coin is one of ``['btc', 'eth', 'bch', 'ltc', 'iota']`` and the value is the value in satoshi, litoshi, wei or IOTA, will convert to the main coin denomination.  
+``{% convert_value coin value %}`` where the coin is one of ``['btc', 'eth', 'bch', 'ltc', 'xmr', 'iota']`` and the value is the value in satoshi, litoshi, wei or IOTA, will convert to the main coin denomination.  
 
 
 ``{{ coin|coin_name }}`` will output the properly formatted cryptocurrency name  

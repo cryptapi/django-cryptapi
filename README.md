@@ -19,7 +19,6 @@ pip install django-cryptapi
 ```
 
 
-
 [on pypi](https://pypi.python.org/pypi/django-cryptapi)
 or
 [on GitHub](https://github.com/cryptapi/django-cryptapi)

@@ -21,11 +21,11 @@ setup(
     author_email="cryptapi@protonmail.com",
     install_requires=[
         'django',
-        'requests'
+        'requests',
     ],
     description="Django implementation of CryptAPI's payment gateway",
-    long_description=long_description,
     long_description_content_type="text/markdown",
+    long_description=long_description,
 
     include_package_data=True,
 
@@ -43,5 +43,5 @@ setup(
 
     license="MIT",
 
-    zip_safe=False
+    zip_safe=False,
 )

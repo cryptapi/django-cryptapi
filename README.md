@@ -14,7 +14,7 @@ Requests >= 2.20
 ## Install
 
 
-```
+```bash
 pip install django-cryptapi
 ```
 
@@ -25,7 +25,7 @@ or
 
 Add to INSTALLED_APPS:
 
-```
+```python
 INSTALLED_APPS = (
     'cryptapi',
     ...
@@ -35,14 +35,14 @@ INSTALLED_APPS = (
 
 Run migrations:
 
-```
+```bash
 python3 manage.py migrate cryptapi
 ```
 
 
 Add CryptAPI's URLs to your project's urls.py file:
 
-```
+```python
 urlpatterns = [
     path('cryptapi/', include('cryptapi.urls')),
     ...
@@ -61,7 +61,7 @@ You need to go into your Django Admin and create a new CryptAPI ``Provider`` for
 
 In your order creation view, assuming ``user_order`` is your order object:
 
-```
+```python
 from cryptapi import Invoice
 ...
 def order_creation_view(request):
@@ -92,7 +92,7 @@ Where:
 
 ### Getting notified when the user pays
 
-```
+```python
 from django.dispatch import receiver
 from cryptapi.signals import payment_complete
 

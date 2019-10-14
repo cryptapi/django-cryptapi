@@ -1,3 +1,5 @@
+![CryptAPI](https://i.imgur.com/IfMAa7E.png)
+
 # CryptAPI's Django Library
 Django's implementation of CryptAPI's payment gateway
 

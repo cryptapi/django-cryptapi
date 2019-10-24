@@ -47,7 +47,7 @@ class Payment(models.Model):
 
 class RequestLog(models.Model):
     request = models.ForeignKey(Request, on_delete=models.SET_NULL, null=True)
-    raw_data = models.CharField(max_length=16383)
+    raw_data = models.CharField(max_length=8192)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -56,7 +56,7 @@ class RequestLog(models.Model):
 
 class PaymentLog(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True)
-    raw_data = models.CharField(max_length=16383)
+    raw_data = models.CharField(max_length=8192)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

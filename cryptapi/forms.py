@@ -26,7 +26,7 @@ class CallbackForm(BaseCallbackForm):
 class AddressCreatedForm(forms.Form):
     address_in = forms.CharField(max_length=128)
     address_out = forms.CharField(max_length=128)
-    callback_url = forms.CharField(max_length=16383)
+    callback_url = forms.CharField(max_length=8192)
     status = forms.CharField(max_length=16)
 
     def __init__(self, initials, *args, **kwargs):

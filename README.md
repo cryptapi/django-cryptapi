@@ -128,6 +128,17 @@ You just need to load ``cryptapi_helper`` on your template and use the following
 
 ``{{ coin|coin_name }}`` will output the properly formatted cryptocurrency name  
 
+
+If you want to build a full payment URI for your clients, you can use our `build_payment_uri` tag, like so:
+
+```djangotemplate
+{% build_payment_uri btc 1PE5U4temq1rFzseHHGE2L8smwHCyRbkx3 0.001 %}
+
+# will output: bitcoin:1PE5U4temq1rFzseHHGE2L8smwHCyRbkx3?amount=0.001
+```
+
+It takes 3 arguments: the coin, the payment address and the value in the main denomination of the coin, and it will output a payment URI ready for you to feed into a QR Code generator
+
 ## Help
 
 Need help?  

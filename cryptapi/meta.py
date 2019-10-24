@@ -1,4 +1,4 @@
 from distutils.version import StrictVersion
 
 
-VERSION = StrictVersion('0.1.4')
+VERSION = StrictVersion('0.1.5')

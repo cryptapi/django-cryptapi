@@ -1,6 +1,11 @@
 import requests
 from django.shortcuts import reverse
 from cryptapi.config import CRYPTAPI_URL
+from urllib.parse import urlencode
+
+
+def build_query_string(data):
+    return urlencode(data)
 
 
 def build_callback_url(_r, params):

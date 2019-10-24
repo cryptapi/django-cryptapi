@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
             name='PaymentLog',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('raw_data', models.CharField(max_length=16384)),
+                ('raw_data', models.CharField(max_length=16383)),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('payment', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cryptapi.Payment')),
             ],
@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
             name='RequestLog',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('raw_data', models.CharField(max_length=16384)),
+                ('raw_data', models.CharField(max_length=16383)),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('request', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cryptapi.Request')),
             ],

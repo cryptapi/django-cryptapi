@@ -124,8 +124,8 @@ class RequestDispatcher:
                 cb_url = build_callback_url(self.request, _cb_params)
 
                 _params = {
-                    'callback': cb_url,
                     'address': provider.cold_wallet,
+                    'callback': cb_url,
                     'pending': 1,
                     **params
                 }
@@ -139,14 +139,9 @@ class RequestDispatcher:
 
                 rl.save()
 
-                initials = {
-                    'address_out': provider.cold_wallet,
-                    'callback_url': cb_url,
-                }
-
                 response = raw_response.json()
 
-                address_form = AddressCreatedForm(data=response, initials=initials)
+                address_form = AddressCreatedForm(data=response, initials=_params)
                 if not address_form.is_valid():
                     return None
 

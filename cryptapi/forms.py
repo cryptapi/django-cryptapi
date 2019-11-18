@@ -34,13 +34,13 @@ class AddressCreatedForm(forms.Form):
         self.initials = initials
 
     def clean_address_out(self):
-        if self.cleaned_data['address_out'] != self.initials['address_out']:
+        if self.cleaned_data['address_out'] != self.initials['address']:
             raise forms.ValidationError
 
         return self.cleaned_data['address_out']
 
     def clean_callback_url(self):
-        if self.cleaned_data['callback_url'] != self.initials['callback_url']:
+        if self.cleaned_data['callback_url'] != self.initials['callback']:
             raise forms.ValidationError
 
         return self.cleaned_data['callback_url']

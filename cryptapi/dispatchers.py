@@ -98,7 +98,7 @@ class RequestDispatcher:
         self.coin = coin
         self.value = value
 
-    def address(self):
+    def address(self, cb_params={}, params={}):
 
         from cryptapi.models import Request, Provider, RequestLog
         from cryptapi.utils import build_callback_url, process_request
@@ -115,20 +115,22 @@ class RequestDispatcher:
 
             if created:
 
-                cb_params = {
+                _cb_params = {
                     'request_id': request_model.id,
                     'nonce': generate_nonce(),
+                    **cb_params
                 }
 
-                cb_url = build_callback_url(self.request, cb_params)
+                cb_url = build_callback_url(self.request, _cb_params)
 
-                params = {
+                _params = {
                     'callback': cb_url,
                     'address': provider.cold_wallet,
                     'pending': 1,
+                    **params
                 }
 
-                raw_response = process_request(self.coin, 'create', params)
+                raw_response = process_request(self.coin, 'create', _params)
 
                 rl = RequestLog(
                     request=request_model,

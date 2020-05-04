@@ -4,7 +4,7 @@ from .choices import COINS, STATUS
 
 
 class Provider(models.Model):
-    coin = models.CharField(_('Coin'), max_length=8, choices=COINS, unique=True)
+    coin = models.CharField(_('Coin'), max_length=16, choices=COINS, unique=True)
     cold_wallet = models.CharField(_('Cold Wallet'), max_length=128)
     active = models.BooleanField(_('Active'), default=True)
     last_updated = models.DateTimeField(auto_now=True)

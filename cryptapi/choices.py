@@ -8,6 +8,10 @@ COINS = (
     ('ltc', 'Litecoin'),
     ('iota', 'IOTA'),
     ('xmr', 'Monero'),
+
+    # Tokens
+    ('erc20_usdt', 'ERC-20 USDT'),
+    ('erc20_bcz', 'ERC-20 BECAZ'),
 )
 
 

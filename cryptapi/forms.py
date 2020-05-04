@@ -34,19 +34,19 @@ class AddressCreatedForm(forms.Form):
         self.initials = initials
 
     def clean_address_out(self):
-        if self.cleaned_data['address_out'] != self.initials['address']:
-            raise forms.ValidationError
+        if self.cleaned_data['address_out'] != self.initials['address_out']:
+            raise forms.ValidationError('Address out mismatch')
 
         return self.cleaned_data['address_out']
 
     def clean_callback_url(self):
-        if self.cleaned_data['callback_url'] != self.initials['callback']:
-            raise forms.ValidationError
+        if self.cleaned_data['callback_url'] != self.initials['callback_url']:
+            raise forms.ValidationError('Callback URL mismatch')
 
         return self.cleaned_data['callback_url']
 
     def clean_status(self):
         if self.cleaned_data['status'] != 'success':
-            raise forms.ValidationError
+            raise forms.ValidationError('Status error')
 
         return self.cleaned_data['status']

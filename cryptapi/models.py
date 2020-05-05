@@ -43,6 +43,10 @@ class Payment(models.Model):
     confirmations = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def coin(self):
+        return self.request.provider.coin
+
     def __str__(self):
         return "#{}, {}, {} ({})".format(self.request.id, self.value_paid, self.request.provider.get_coin_display(), self.timestamp.strftime('%x %X'))
 

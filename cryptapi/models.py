@@ -35,6 +35,8 @@ class Payment(models.Model):
     request = models.ForeignKey(Request, on_delete=models.SET_NULL, null=True)
     value_paid = models.DecimalField(_('Value Paid'), default=0, max_digits=65, decimal_places=0)
     value_received = models.DecimalField(_('Value Received'), default=0, max_digits=65, decimal_places=0)
+    value_paid_coin = models.DecimalField(_('Value Paid Coin'), default=0, max_digits=65, decimal_places=18)
+    value_received_coin = models.DecimalField(_('Value Received Coin'), default=0, max_digits=65, decimal_places=18)
     txid_in = models.CharField(_('TXID in'), max_length=256, default='')
     txid_out = models.CharField(_('TXID out'), max_length=256, default='')
     pending = models.BooleanField(default=True)

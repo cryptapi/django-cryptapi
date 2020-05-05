@@ -29,12 +29,14 @@ def callback(_r):
         payment = {
             'txid_in': form.cleaned_data.get('txid_in'),
             'value_paid': form.cleaned_data.get('value'),
+            'value_paid_coin': form.cleaned_data.get('value_coin'),
             'confirmations': form.cleaned_data.get('confirmations'),
         }
 
         if not pending:
             payment['txid_out'] = form.cleaned_data.get('txid_out')
             payment['value_received'] = form.cleaned_data.get('value_forwarded')
+            payment['value_received_coin'] = form.cleaned_data.get('value_forwarded_coin')
 
         raw_data = json.dumps(_r.GET)
 

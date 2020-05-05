@@ -16,7 +16,7 @@ Requests >= 2.20
 ## Install
 
 
-```bash
+```shell script
 pip install django-cryptapi
 ```
 
@@ -37,10 +37,15 @@ INSTALLED_APPS = (
 
 Run migrations:
 
-```bash
+```shell script
 python3 manage.py migrate cryptapi
 ```
 
+Collect static files:
+
+```shell script
+python3 manage.py collectstatic
+```
 
 Add CryptAPI's URLs to your project's urls.py file:
 
@@ -88,7 +93,7 @@ Where:
 
 ``request`` is Django's view HttpRequest object  
 ``order_id`` is just your order id  
-``coin`` is the coin you wish to use, can be one of: ``['btc', 'eth', 'bch', 'ltc', 'xmr', 'iota']`` and you need to have a ``Provider`` set up for that coin.  
+``coin`` is the ticker of the coin you wish to use, any of our supported coins (https://cryptapi.io/pricing/). You need to have a ``Provider`` set up for that coin.  
 ``value`` is an integer of the value of your order, either in satoshi, litoshi, wei, piconero or IOTA
 
 
@@ -120,24 +125,51 @@ This library has a couple of helpers to help you get started
 ``cryptapi.get_order_invoices(order_id)`` returns a list of ``cryptapi.models.Request`` objects of your order (you can have multiple objects for the same order if the user mistakenly initiated the payment with another coin)
 
 
+### Template Tags
 There's also some template tags which you can import to help you with conversions and the protocols.
 You just need to load ``cryptapi_helper`` on your template and use the following tags / filters:  
 
-``{% convert_value coin value %}`` where the coin is one of ``['btc', 'eth', 'bch', 'ltc', 'xmr', 'iota']`` and the value is the value in satoshi, litoshi, wei or IOTA, will convert to the main coin denomination.  
+* #### QR code
+If you want the library to generate and display a clickable QR code for you, just use our `generate_qrcode`, like this:
 
+```djangotemplate
+{% generate_qrcode btc 1PE5U4temq1rFzseHHGE2L8smwHCyRbkx3 0.001 %}
+```
 
-``{{ coin|coin_name }}`` will output the properly formatted cryptocurrency name  
+It takes 3 arguments: the coin, the payment address and the value in the main denomination of the coin, and it will output a neat QR code for your page. 
 
+The QR code that can also be clicked on mobile devices to launch the user's wallet.
 
-If you want to build a full payment URI for your clients, you can use our `build_payment_uri` tag, like so:
+##### Example:
+```djangotemplate
+{% load cryptapi_helper %}
+<body>
+    <div class="row">
+        <div class="col-sm-12">
+            {% generate_qrcode btc 1PE5U4temq1rFzseHHGE2L8smwHCyRbkx3 0.001 %}
+        </div>
+    </div>
+</body>
+```
+
+* #### Payment URI
+If you just want to build a full payment URI to plug into your own QR code, you can use our `build_payment_uri` tag, like so:
 
 ```djangotemplate
 {% build_payment_uri btc 1PE5U4temq1rFzseHHGE2L8smwHCyRbkx3 0.001 %}
-
-# will output: bitcoin:1PE5U4temq1rFzseHHGE2L8smwHCyRbkx3?amount=0.001
 ```
 
-It takes 3 arguments: the coin, the payment address and the value in the main denomination of the coin, and it will output a payment URI ready for you to feed into a QR Code generator
+It will output: `bitcoin:1PE5U4temq1rFzseHHGE2L8smwHCyRbkx3?amount=0.001`
+
+Same arguments as for the QR code
+
+* #### Helpers
+
+``{% convert_value coin value %}`` where the coin is the coin ticker and the value is the value in satoshi, litoshi, wei or IOTA, will convert to the main coin unit.  
+
+
+``{{ coin|coin_name }}`` will output the properly formatted cryptocurrency name.
+
 
 ## Help
 

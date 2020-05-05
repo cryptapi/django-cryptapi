@@ -1,0 +1,69 @@
+{% load static cryptapi_helper %}
+<div id="cryptapi_qrcode"><a href="{{ payment_uri }}" target="_blank"></a></div>
+
+<script src="{% static 'cryptapi/js/kjua.min.js' %}"></script>
+<script>
+    var icon_path = "{% get_static_prefix %}cryptapi/icons/{{ coin }}.png";
+    var icon = new Image();
+
+    icon.onload = load_canvas;
+    icon.onerror = function () {
+        icon = null;
+        load_canvas();
+    };
+    icon.src = icon_path;
+
+    function load_canvas() {
+        var qrcode = kjua({
+            render: 'image',
+            crisp: true,
+            size: 400,
+            rounded: 50,
+            text: "{{ payment_uri }}",
+            mode: "image",
+            mSize: 25,
+            mPosX: 50,
+            mPosY: 50,
+            image: icon,
+        });
+
+        document.querySelector('#cryptapi_qrcode a').appendChild(qrcode);
+    }
+</script>
+<style>
+    #cryptapi_qrcode {
+        display: inline-block;
+        position: relative;
+        border: 1px #666 solid;
+        border-radius: 5px;
+        background: white;
+        padding: 5px;
+    }
+
+    #cryptapi_qrcode:before {
+        content: "clickable on mobile devices";
+        font-size: 12px;
+        font-family: "roboto", sans-serif;
+        color: #666;
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+
+    #cryptapi_qrcode:after {
+        content: "powered by CryptAPI.io";
+        font-size: 11px;
+        font-family: "roboto", sans-serif;
+        color: #666;
+        position: absolute;
+        bottom: -20px;
+        right: -1px;
+        background: white;
+        padding: 1rem 0.4rem 0.2rem 0.4rem;
+        border-radius: 0.4rem;
+        z-index: -10;
+        border: 1px #666 solid;
+    }
+</style>

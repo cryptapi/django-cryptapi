@@ -1,6 +1,9 @@
 from django import template
-from cryptapi.helpers import get_coin_multiplier
+from django.template.loader import render_to_string
+
+from cryptapi.helpers import get_coin_multiplier, build_erc681_uri
 from cryptapi.utils import build_query_string
+from cryptapi.choices import TOKEN_DICT, TOKENS
 
 register = template.Library()
 
@@ -23,7 +26,6 @@ def coin_protocol(coin):
         'btc': 'bitcoin:',
         'bch': 'bitcoincash:',
         'ltc': 'litecoin:',
-        'eth': 'ethereum:',
         'xmr': 'monero:',
         'iota': 'iota:',
     }
@@ -33,14 +35,16 @@ def coin_protocol(coin):
 
 @register.simple_tag
 def build_payment_uri(coin, address, value):
+    if coin in TOKEN_DICT + ['eth']:
+        return build_erc681_uri(coin, address, value)
+
     protocol = coin_protocol(coin)
     keys = {
         'btc': 'amount',
         'bch': 'amount',
         'ltc': 'amount',
-        'eth': 'value',
         'xmr': 'tx_amount',
-        'iota': 'amount'
+        'iota': 'amount',
     }
 
     if protocol:
@@ -51,7 +55,7 @@ def build_payment_uri(coin, address, value):
 
         c_value = value
 
-        if coin in ['eth', 'iota']:
+        if coin in ['iota']:
             multiplier = get_coin_multiplier(coin, default=None)
 
             if multiplier:
@@ -62,6 +66,18 @@ def build_payment_uri(coin, address, value):
         return "{uri}?{query}".format(uri=uri, query=build_query_string(data))
 
 
+@register.simple_tag
+def generate_qrcode(coin, address, value):
+    payment_uri = build_payment_uri(coin, address, value)
+
+    context = {
+        'coin': coin,
+        'payment_uri': payment_uri,
+    }
+
+    return render_to_string('cryptoapi/qrcode.html', context=context)
+
+
 @register.filter
 def coin_name(coin):
     coins = {
@@ -70,6 +86,10 @@ def coin_name(coin):
         'ltc': 'LTC',
         'eth': 'ETH',
         'iota': 'MIOTA',
+        'xmr': 'XMR',
+
+        # Tokens
+        **{t[0]: t[1] for t in TOKENS}
     }
 
     return coins.get(coin, '')

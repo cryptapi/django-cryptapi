@@ -1,11 +1,36 @@
 import string
 import random
 from math import floor, log10
-from cryptapi.choices import COIN_MULTIPLIERS
+from cryptapi.choices import COIN_MULTIPLIERS, TOKEN_DICT
 
 
 def get_coin_multiplier(coin, default=None):
     return COIN_MULTIPLIERS.get(coin, default)
+
+
+def build_erc681_uri(coin, address, value):
+    base_uri = 'ethereum:{target_address}'
+
+    multiplier = get_coin_multiplier(coin, default=None)
+
+    if multiplier:
+        value = int(value * multiplier)
+
+        _token = TOKEN_DICT.get(coin)
+        if _token:
+            return (base_uri + '/transfer?address={receiver_address}&uint256={value}').format(
+                target_address=_token[2],
+                receiver_address=address,
+                value=value,
+            )
+
+        if coin in ['eth']:
+            return (base_uri + '?value={value}').format(
+                target_address=address,
+                value=value
+            )
+
+    return ''
 
 
 def round_sig(x, sig=4):

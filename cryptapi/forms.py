@@ -2,7 +2,7 @@ from django import forms
 from .choices import COINS
 
 
-class BaseCallbackForm(forms.Form):
+class CallbackForm(forms.Form):
 
     # Request data
     request_id = forms.IntegerField()
@@ -15,12 +15,12 @@ class BaseCallbackForm(forms.Form):
     txid_in = forms.CharField(max_length=256)
     confirmations = forms.IntegerField()
     value = forms.DecimalField(max_digits=65, decimal_places=0)
+    value_coin = forms.DecimalField(max_digits=65, decimal_places=18)
 
-
-class CallbackForm(BaseCallbackForm):
-    # Payment data
-    txid_out = forms.CharField(max_length=256)
-    value_forwarded = forms.DecimalField(max_digits=65, decimal_places=0)
+    # May be blank
+    txid_out = forms.CharField(max_length=256, required=False)
+    value_forwarded = forms.DecimalField(max_digits=65, decimal_places=0, required=False)
+    value_forwarded_coin = forms.DecimalField(max_digits=65, decimal_places=18, required=False)
 
 
 class AddressCreatedForm(forms.Form):
@@ -33,14 +33,8 @@ class AddressCreatedForm(forms.Form):
         super(AddressCreatedForm, self).__init__(*args, **kwargs)
         self.initials = initials
 
-    def clean_address_out(self):
-        if self.cleaned_data['address_out'] != self.initials['address_out']:
-            raise forms.ValidationError('Address out mismatch')
-
-        return self.cleaned_data['address_out']
-
     def clean_callback_url(self):
-        if self.cleaned_data['callback_url'] != self.initials['callback_url']:
+        if self.cleaned_data['callback_url'] != self.initials['callback']:
             raise forms.ValidationError('Callback URL mismatch')
 
         return self.cleaned_data['callback_url']

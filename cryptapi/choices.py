@@ -1,8 +1,8 @@
 from django.utils.translation import gettext_lazy as _
 
 TOKENS = [
-    ('erc20_usdt', 'ERC-20 USDT', '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6),
-    ('erc20_bcz', 'ERC-20 BECAZ', '0x08399ab5eBBE96870B289754A7bD21E7EC8c6FCb', 18),
+    ('erc20_usdt', 'ERC-20 USDT', '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 4),
+    ('erc20_bcz', 'ERC-20 BECAZ', '0x08399ab5eBBE96870B289754A7bD21E7EC8c6FCb', 18, 0),
 ]
 
 TOKEN_DICT = {t[0]: t for t in TOKENS}

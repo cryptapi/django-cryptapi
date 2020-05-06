@@ -1,12 +1,12 @@
 
 class CallbackDispatcher:
 
-    def __init__(self, coin, request, payment, raw_data, pending=False):
+    def __init__(self, coin, request, payment, raw_data, result=None):
         self.coin = coin
-        self.request = request
+        self._request = request
         self.payment = payment
         self.raw_data = raw_data
-        self.pending = pending
+        self.result = result
 
     def callback(self):
 
@@ -16,18 +16,18 @@ class CallbackDispatcher:
         try:
             request = Request.objects.get(
                 provider__coin=self.coin,
-                id=self.request['id'],
-                nonce=self.request['nonce'],
+                id=self._request['id'],
+                nonce=self._request['nonce'],
             )
 
             payment, created = request.payment_set.get_or_create(txid_in__iexact=self.payment['txid_in'])
 
-            [setattr(payment, k, v) for k, v in self.payment.items()]
+            [setattr(payment, k, v) for k, v in self.payment.items() if v is not None]
 
-            payment.pending = self.pending
+            payment.pending = self.result in ['pending']
             payment.save()
 
-            if self.pending:
+            if payment.pending:
                 payment_pending.send_robust(
                     sender=self.__class__,
                     order_id=request.order_id,
@@ -93,17 +93,18 @@ class CallbackDispatcher:
 class RequestDispatcher:
 
     def __init__(self, request, order_id, coin, value):
-        self.request = request
+        self._request = request
         self.order_id = order_id
         self.coin = coin
         self.value = value
 
-    def address(self, cb_params={}, params={}):
+    def request(self, cb_params={}, params={}):
 
         from cryptapi.models import Request, Provider, RequestLog
         from cryptapi.utils import build_callback_url, process_request
         from cryptapi.helpers import generate_nonce
         from cryptapi.forms import AddressCreatedForm
+        from cryptapi.choices import TOKEN_DICT
 
         try:
             provider = Provider.objects.get(coin=self.coin, active=True)
@@ -121,7 +122,7 @@ class RequestDispatcher:
                     **cb_params
                 }
 
-                cb_url = build_callback_url(self.request, _cb_params)
+                cb_url = build_callback_url(self._request, _cb_params)
 
                 _params = {
                     'address': provider.cold_wallet,
@@ -145,7 +146,11 @@ class RequestDispatcher:
                 if not address_form.is_valid():
                     return None
 
-                request_model.nonce = cb_params['nonce']
+                if self.coin in TOKEN_DICT:
+                    divider = TOKEN_DICT[self.coin][4]
+                    self.value = self.value / 10**divider
+
+                request_model.nonce = _cb_params['nonce']
                 request_model.address_in = response['address_in']
                 request_model.address_out = provider.cold_wallet
                 request_model.value_requested = self.value
@@ -154,10 +159,18 @@ class RequestDispatcher:
 
                 request_model.save()
 
-            return request_model.address_in
+            return request_model
 
         except Provider.DoesNotExist:
             if not self.coin:
                 raise ValueError('No provider provided')
 
             raise ValueError('Provider not found or not active')
+
+    def address(self, cb_params={}, params={}):
+        request = self.request(cb_params, params)
+
+        if request:
+            return request.address_in
+
+        return None

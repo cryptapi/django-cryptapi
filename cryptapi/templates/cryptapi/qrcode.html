@@ -1,5 +1,10 @@
 {% load static cryptapi_helper %}
-<div id="cryptapi_qrcode"><a href="{{ payment_uri }}" target="_blank"></a></div>
+<div id="cryptapi_qrcode">
+    <div class="qrcode_wrapper">
+        <a href="{{ payment_uri|safe }}" target="_blank"></a>
+    </div>
+    <div class="cryptapi_branding">powered by <a href="https://cryptapi.io" target="_blank">CryptAPI</a></div>
+</div>
 
 <script src="{% static 'cryptapi/js/kjua.min.js' %}"></script>
 <script>
@@ -17,9 +22,10 @@
         var qrcode = kjua({
             render: 'image',
             crisp: true,
+            ecLevel: 'H',
             size: 400,
             rounded: 50,
-            text: "{{ payment_uri }}",
+            text: "{{ payment_uri|safe }}",
             mode: "image",
             mSize: 25,
             mPosX: 50,
@@ -34,13 +40,18 @@
     #cryptapi_qrcode {
         display: inline-block;
         position: relative;
+    }
+
+    #cryptapi_qrcode .qrcode_wrapper {
+        position: relative;
         border: 1px #666 solid;
         border-radius: 5px;
         background: white;
         padding: 5px;
+        z-index: 5;
     }
 
-    #cryptapi_qrcode:before {
+    #cryptapi_qrcode .qrcode_wrapper:before {
         content: "clickable on mobile devices";
         font-size: 12px;
         font-family: "roboto", sans-serif;
@@ -52,18 +63,17 @@
         text-align: center;
     }
 
-    #cryptapi_qrcode:after {
-        content: "powered by CryptAPI.io";
+    #cryptapi_qrcode .cryptapi_branding {
         font-size: 11px;
         font-family: "roboto", sans-serif;
         color: #666;
         position: absolute;
         bottom: -20px;
-        right: -1px;
-        background: white;
+        right: 0;
+        background: #ccc;
         padding: 1rem 0.4rem 0.2rem 0.4rem;
         border-radius: 0.4rem;
-        z-index: -10;
+        z-index: 4;
         border: 1px #666 solid;
     }
 </style>

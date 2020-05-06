@@ -68,6 +68,8 @@ You need to go into your Django Admin and create a new CryptAPI ``Provider`` for
 
 In your order creation view, assuming ``user_order`` is your order object:
 
+* ##### If you want the address generated:
+
 ```python
 from cryptapi import Invoice
 ...
@@ -89,7 +91,30 @@ def order_creation_view(request):
         # Handle request error, check RequestLogs on Admin
 ```
 
-Where:
+* ##### If you want the `cryptapi.models.Request` object:
+
+```python
+from cryptapi import Invoice
+...
+def order_creation_view(request):
+    ...
+    invoice = Invoice(
+        request=request,
+        order_id=user_order.id,
+        coin='btc',
+        value=user_order.value
+    )
+    
+    payment_request = invoice.request()
+    
+    if payment_request is not None:
+        # Show the payment address to the user
+        ...
+    else:
+        # Handle request error, check RequestLogs on Admin
+```
+
+#### Where:
 
 ``request`` is Django's view HttpRequest object  
 ``order_id`` is just your order id  
@@ -129,7 +154,18 @@ This library has a couple of helpers to help you get started
 There's also some template tags which you can import to help you with conversions and the protocols.
 You just need to load ``cryptapi_helper`` on your template and use the following tags / filters:  
 
-* #### QR code
+* #### QR code (with `cryptapi.models.Request` object)
+If you want the library to generate and display a clickable QR code for you, just use our `generate_qrcode_for_request`, like this:
+
+```djangotemplate
+{% generate_qrcode_for_request payment_request %}
+```
+
+You just need to feed it the `payment_request` object created with `invoice.request()` 
+
+The QR code that can also be clicked on mobile devices to launch the user's wallet.
+
+* #### QR code (with address, coin and value)
 If you want the library to generate and display a clickable QR code for you, just use our `generate_qrcode`, like this:
 
 ```djangotemplate

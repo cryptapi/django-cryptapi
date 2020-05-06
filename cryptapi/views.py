@@ -1,17 +1,13 @@
 import json
 from django.http import HttpResponse
-from cryptapi.forms import CallbackForm, BaseCallbackForm
+from cryptapi.forms import CallbackForm
 from cryptapi.dispatchers import CallbackDispatcher
 
 
 def callback(_r):
 
-    pending = _r.GET.get('pending', False)
-
-    if not pending:
-        form = CallbackForm(data=_r.GET)
-    else:
-        form = BaseCallbackForm(data=_r.GET)
+    result = _r.GET.get('result')
+    form = CallbackForm(data=_r.GET)
 
     if form.is_valid():
 
@@ -31,16 +27,14 @@ def callback(_r):
             'value_paid': form.cleaned_data.get('value'),
             'value_paid_coin': form.cleaned_data.get('value_coin'),
             'confirmations': form.cleaned_data.get('confirmations'),
+            'txid_out': form.cleaned_data.get('txid_out'),
+            'value_received': form.cleaned_data.get('value_forwarded'),
+            'value_received_coin': form.cleaned_data.get('value_forwarded_coin')
         }
-
-        if not pending:
-            payment['txid_out'] = form.cleaned_data.get('txid_out')
-            payment['value_received'] = form.cleaned_data.get('value_forwarded')
-            payment['value_received_coin'] = form.cleaned_data.get('value_forwarded_coin')
 
         raw_data = json.dumps(_r.GET)
 
-        dispatcher = CallbackDispatcher(coin, request, payment, raw_data, pending=pending)
+        dispatcher = CallbackDispatcher(coin, request, payment, raw_data, result=result)
 
         if dispatcher.callback():
             return HttpResponse('*ok*')

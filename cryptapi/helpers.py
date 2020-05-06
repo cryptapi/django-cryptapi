@@ -2,6 +2,7 @@ import string
 import random
 from math import floor, log10
 from cryptapi.choices import COIN_MULTIPLIERS, TOKEN_DICT
+from cryptapi.utils import build_query_string
 
 
 def get_coin_multiplier(coin, default=None):
@@ -18,16 +19,18 @@ def build_erc681_uri(coin, address, value):
 
         _token = TOKEN_DICT.get(coin)
         if _token:
-            return (base_uri + '/transfer?address={receiver_address}&uint256={value}').format(
+
+            value = int(value * 10**_token[4])
+
+            return (base_uri + '/transfer?{query}').format(
                 target_address=_token[2],
-                receiver_address=address,
-                value=value,
+                query=build_query_string({'address': address, 'uint256': value})
             )
 
         if coin in ['eth']:
-            return (base_uri + '?value={value}').format(
+            return (base_uri + '?{query}').format(
                 target_address=address,
-                value=value
+                query=build_query_string({'value': value})
             )
 
     return ''

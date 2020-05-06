@@ -5,6 +5,8 @@ from cryptapi.helpers import get_coin_multiplier, build_erc681_uri
 from cryptapi.utils import build_query_string
 from cryptapi.choices import TOKEN_DICT, TOKENS
 
+from decimal import Decimal
+
 register = template.Library()
 
 
@@ -35,7 +37,10 @@ def coin_protocol(coin):
 
 @register.simple_tag
 def build_payment_uri(coin, address, value):
-    if coin in TOKEN_DICT + ['eth']:
+
+    value = Decimal(str(value))
+
+    if coin in list(TOKEN_DICT.keys()) + ['eth']:
         return build_erc681_uri(coin, address, value)
 
     protocol = coin_protocol(coin)
@@ -75,7 +80,22 @@ def generate_qrcode(coin, address, value):
         'payment_uri': payment_uri,
     }
 
-    return render_to_string('cryptoapi/qrcode.html', context=context)
+    return render_to_string('cryptapi/qrcode.html', context=context)
+
+
+@register.simple_tag
+def generate_qrcode_for_request(request):
+    coin = request.provider.coin
+    address = request.address_in
+
+    multiplier = get_coin_multiplier(coin, default=None)
+
+    if multiplier:
+        value = Decimal(request.value_requested) / multiplier
+
+        return generate_qrcode(coin, address, value)
+
+    return ''
 
 
 @register.filter

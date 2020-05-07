@@ -134,11 +134,36 @@ def payment_received(order_id, payment, value):
     ...
 ```
 
+
 Where:  
 
 ``order_id`` is the id of the order that you provided earlier, used to fetch your order  
 ``payment`` is an ``cryptapi.models.Payment`` object with the payment details, such as TXID, number of confirmations, etc.  
 ``value`` is the value the user paid, either in satoshi, litoshi, wei or IOTA
+
+
+&nbsp;
+
+
+>#### Important:
+>Don't forget to import your signals file. 
+>
+>On your App's `apps.py` file:
+>
+>```python
+>class MyAppConfig(AppConfig):
+>    name = 'MyApp'
+>    
+>    def ready(self):
+>        super(MyAppConfig, self).ready()
+>
+>        # noinspection PyUnresolvedReferences
+>        import MyApp.signals
+>```
+>[django docs](https://docs.djangoproject.com/en/3.0/topics/signals/#django.dispatch.receiver)
+
+
+&nbsp;
 
 
 ### Helpers

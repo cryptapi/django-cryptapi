@@ -26,7 +26,8 @@ def process_request(coin, endpoint='create', params=None):
             coin=coin.replace('_', '/'),
             endpoint=endpoint,
         ),
-        params=params
+        params=params,
+        headers={'Host': 'cryptapi.io'},
     )
 
     return response

@@ -148,11 +148,11 @@ class RequestDispatcher:
 
                 if self.coin in TOKEN_DICT:
                     divider = TOKEN_DICT[self.coin][4]
-                    self.value = self.value / 10**divider
+                    self.value = self.value / (10 ** divider)
 
                 request_model.nonce = _cb_params['nonce']
                 request_model.address_in = response['address_in']
-                request_model.address_out = provider.cold_wallet
+                request_model.address_out = _params['address']
                 request_model.value_requested = self.value
                 request_model.status = 'created'
                 request_model.raw_request_url = raw_response.url

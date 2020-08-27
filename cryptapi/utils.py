@@ -1,6 +1,6 @@
 import requests
 from django.shortcuts import reverse
-from cryptapi.config import CRYPTAPI_URL
+from cryptapi.config import CRYPTAPI_URL, CALLBACK_BASE_URL
 from urllib.parse import urlencode
 
 
@@ -9,7 +9,10 @@ def build_query_string(data):
 
 
 def build_callback_url(_r, params):
-    base_url = '{scheme}://{host}'.format(scheme=_r.scheme, host=_r.get_host())
+
+    base_url = CALLBACK_BASE_URL
+    if not base_url:
+        base_url = '{scheme}://{host}'.format(scheme=_r.scheme, host=_r.get_host())
 
     base_request = requests.Request(
         url="{}{}".format(base_url, reverse('cryptapi:callback')),

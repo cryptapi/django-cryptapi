@@ -24,7 +24,7 @@ def build_callback_url(_r, params):
 
 def process_request(coin, endpoint='create', params=None):
     response = requests.get(
-        url="{base_url}{coin}/{endpoint}".format(
+        url="{base_url}{coin}/{endpoint}/".format(
             base_url=CRYPTAPI_URL,
             coin=coin.replace('_', '/'),
             endpoint=endpoint,
@@ -34,6 +34,15 @@ def process_request(coin, endpoint='create', params=None):
     )
 
     return response
+
+
+def info(coin):
+    _info = process_request(coin, endpoint='info')
+
+    if _info:
+        return _info.json()
+
+    return None
 
 
 def get_active_providers():

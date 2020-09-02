@@ -1,6 +1,7 @@
 from django.db import models
+from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
-from .choices import COINS, STATUS
+from .choices import COINS, STATUS, TOKEN_DICT
 
 
 class Provider(models.Model):
@@ -23,6 +24,27 @@ class Request(models.Model):
     status = models.CharField(_('Status'), choices=STATUS, max_length=16, default='', null=True)
     raw_request_url = models.CharField(_('Request URL'), max_length=8192, default='', null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def total_paid(self):
+        qs = self.payment_set.filter(pending=False)
+
+        if qs.exists():
+            return qs.aggregate(sum=Sum('value_paid')).get('sum', 0)
+
+        return 0
+
+    def set_value(self, value, commit=False):
+        _coin = self.provider.coin.lower()
+        _token = TOKEN_DICT.get(_coin)
+
+        if _token:
+            value = value / (10 ** _token[4])
+
+        self.value_requested = value
+
+        if commit:
+            self.save()
 
     def __str__(self):
         return "#{}, {}#{}, {} ({})".format(self.id, _('Order'), self.order_id, self.get_status_display(), self.timestamp.strftime('%x %X'))

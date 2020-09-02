@@ -53,8 +53,7 @@ class CallbackDispatcher:
                     total_received = self.payment['value_paid']
 
                     if total_received < request.value_requested:
-                        total_received_list = request.payment_set.filter(pending=False).values_list('value_paid', flat=True)
-                        total_received = sum(total_received_list)
+                        total_received = request.total_paid
 
                     if total_received < request.value_requested:
                         request.status = 'insufficient'
@@ -104,7 +103,6 @@ class RequestDispatcher:
         from cryptapi.utils import build_callback_url, process_request
         from cryptapi.helpers import generate_nonce
         from cryptapi.forms import AddressCreatedForm
-        from cryptapi.choices import TOKEN_DICT
 
         try:
             provider = Provider.objects.get(coin=self.coin, active=True)
@@ -146,16 +144,13 @@ class RequestDispatcher:
                 if not address_form.is_valid():
                     return None
 
-                if self.coin in TOKEN_DICT:
-                    divider = TOKEN_DICT[self.coin][4]
-                    self.value = self.value / (10 ** divider)
-
                 request_model.nonce = _cb_params['nonce']
                 request_model.address_in = response['address_in']
                 request_model.address_out = _params['address']
-                request_model.value_requested = self.value
                 request_model.status = 'created'
                 request_model.raw_request_url = raw_response.url
+
+                request_model.set_value(self.value)
 
                 request_model.save()
 

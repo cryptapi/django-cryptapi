@@ -53,7 +53,7 @@ class CallbackDispatcher:
                     total_received = self.payment['value_paid']
 
                     if total_received < request.value_requested:
-                        total_received = request.total_paid
+                        total_received = request.total_confirmed
 
                     if total_received < request.value_requested:
                         request.status = 'insufficient'

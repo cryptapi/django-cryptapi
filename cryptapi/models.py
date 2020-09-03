@@ -26,7 +26,25 @@ class Request(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     @property
-    def total_paid(self):
+    def total(self):
+        qs = self.payment_set.all()
+
+        if qs.exists():
+            return qs.aggregate(sum=Sum('value_paid')).get('sum', 0)
+
+        return 0
+
+    @property
+    def total_pending(self):
+        qs = self.payment_set.filter(pending=True)
+
+        if qs.exists():
+            return qs.aggregate(sum=Sum('value_paid')).get('sum', 0)
+
+        return 0
+
+    @property
+    def total_confirmed(self):
         qs = self.payment_set.filter(pending=False)
 
         if qs.exists():

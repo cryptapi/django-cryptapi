@@ -1,6 +1,6 @@
 import requests
 from django.shortcuts import reverse
-from cryptapi.config import CRYPTAPI_URL, CALLBACK_BASE_URL
+from cryptapi.config import CRYPTAPI_URL, CALLBACK_BASE_URL, CRYPTAPI_HOST
 from urllib.parse import urlencode
 
 
@@ -22,21 +22,25 @@ def build_callback_url(_r, params):
     return base_request.url
 
 
-def process_request(coin, endpoint='create', params=None):
+def process_request(coin='', endpoint='create', params=None):
+
+    if coin != '':
+        coin += '/'
+
     response = requests.get(
-        url="{base_url}{coin}/{endpoint}/".format(
+        url="{base_url}{coin}{endpoint}/".format(
             base_url=CRYPTAPI_URL,
             coin=coin.replace('_', '/'),
             endpoint=endpoint,
         ),
         params=params,
-        headers={'Host': 'cryptapi.io'},
+        headers={'Host': CRYPTAPI_HOST},
     )
 
     return response
 
 
-def info(coin):
+def info(coin=''):
     _info = process_request(coin, endpoint='info')
 
     if _info:

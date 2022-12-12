@@ -1,5 +1,6 @@
 from django.contrib import admin
-from cryptapi.models import Provider, Request, Payment, RequestLog, PaymentLog
+from .models import Provider, Request, Payment, RequestLog, PaymentLog, Metadata
+from .forms import CreateProviderForm
 
 
 class ReadOnlyAdmin(admin.ModelAdmin):
@@ -18,41 +19,17 @@ class ReadOnlyAdmin(admin.ModelAdmin):
 
 
 class ProviderAdmin(admin.ModelAdmin):
-    add_fieldsets = (
-        ('Coin', {
-            'fields': ('coin',),
-            'description': 'Select provider coin'
-        }),
-        ('Cold Wallet', {
-            'fields': ('cold_wallet',),
-            'description': "Insert your cold wallet's address"
-        }),
-        ('Active', {
-            'fields': ('active',),
-            'description': "Enable this provider"
-        }),
-    )
-
-    fieldsets = (
-        ('Coin', {
-            'fields': ('coin', ),
-            'description': 'Select provider coin'
-        }),
-        ('Cold Wallet', {
-            'fields': ('cold_wallet', ),
-            'description': "Insert your cold wallet's address"
-        }),
-        ('Active', {
-            'fields': (('active',), ('last_updated', ), ),
-            'description': "Enable this provider"
-        }),
-    )
-
-    readonly_fields = ('last_updated', )
+    readonly_fields = ['last_updated']
+    form = CreateProviderForm
 
 
-admin.site.register(Provider)
+class MetadataAdmin(ReadOnlyAdmin):
+    list_display = ('__str__', 'last_updated',)
+
+
+admin.site.register(Provider, ProviderAdmin)
 admin.site.register(Request, ReadOnlyAdmin)
 admin.site.register(RequestLog, ReadOnlyAdmin)
 admin.site.register(Payment, ReadOnlyAdmin)
 admin.site.register(PaymentLog, ReadOnlyAdmin)
+admin.site.register(Metadata, MetadataAdmin)

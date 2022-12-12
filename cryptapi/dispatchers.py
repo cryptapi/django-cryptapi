@@ -1,4 +1,3 @@
-
 class CallbackDispatcher:
 
     def __init__(self, coin, request, payment, raw_data, result=None):
@@ -12,6 +11,7 @@ class CallbackDispatcher:
 
         from cryptapi.models import Request, PaymentLog
         from cryptapi.signals import payment_received, payment_complete, payment_pending
+        from cryptapi.cryptapi import get_address
 
         try:
             request = Request.objects.get(
@@ -91,17 +91,18 @@ class CallbackDispatcher:
 
 class RequestDispatcher:
 
-    def __init__(self, request, order_id, coin, value):
+    def __init__(self, request, order_id, coin, value, apikey=None):
         self._request = request
         self.order_id = order_id
         self.coin = coin
         self.value = value
+        self.apikey = apikey
 
     def request(self, cb_params={}, params={}):
 
         from cryptapi.models import Request, Provider, RequestLog
-        from cryptapi.utils import build_callback_url, process_request
-        from cryptapi.helpers import generate_nonce
+        from cryptapi.cryptapi import get_address
+        from cryptapi.utils import generate_nonce, build_callback_url
         from cryptapi.forms import AddressCreatedForm
 
         try:
@@ -112,8 +113,7 @@ class RequestDispatcher:
                 order_id=self.order_id,
             )
 
-            if created:
-
+            if created is not None:
                 _cb_params = {
                     'request_id': request_model.id,
                     'nonce': generate_nonce(),
@@ -129,16 +129,23 @@ class RequestDispatcher:
                     **params
                 }
 
-                raw_response = process_request(self.coin, 'create', _params)
+                if self.apikey is not None:
+                    _params = {
+                        'address': provider.cold_wallet,
+                        'callback': cb_url,
+                        'pending': 1,
+                        'apikey': self.apikey,
+                        **params
+                    }
+
+                response = get_address(self.coin, _params)
 
                 rl = RequestLog(
                     request=request_model,
-                    raw_data=raw_response.text
+                    raw_data=response
                 )
 
                 rl.save()
-
-                response = raw_response.json()
 
                 address_form = AddressCreatedForm(data=response, initials=_params)
                 if not address_form.is_valid():
@@ -148,7 +155,7 @@ class RequestDispatcher:
                 request_model.address_in = response['address_in']
                 request_model.address_out = _params['address']
                 request_model.status = 'created'
-                request_model.raw_request_url = raw_response.url
+                request_model.raw_request_url = response['raw_request_url']
 
                 request_model.set_value(self.value)
 

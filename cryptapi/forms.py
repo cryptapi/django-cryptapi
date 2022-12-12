@@ -1,15 +1,24 @@
 from django import forms
-from .choices import COINS
+from .models import Provider
+from .utils import get_choices_coins
+
+
+class CreateProviderForm(forms.ModelForm):
+    class Meta:
+        model = Provider
+        fields = ('active', 'coin', 'cold_wallet')
+        widgets = {
+            'coin': forms.Select(attrs={}, choices=get_choices_coins())
+        }
 
 
 class CallbackForm(forms.Form):
-
     # Request data
     request_id = forms.IntegerField()
     nonce = forms.CharField(max_length=32)
     address_in = forms.CharField(max_length=128)
     address_out = forms.CharField(max_length=128)
-    coin = forms.ChoiceField(choices=COINS)
+    coin = forms.ChoiceField(choices=get_choices_coins())
 
     # Payment data
     txid_in = forms.CharField(max_length=256)

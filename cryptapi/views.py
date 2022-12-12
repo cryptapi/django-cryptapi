@@ -1,11 +1,13 @@
 import json
-from django.http import HttpResponse
+from decimal import *
+from django.http import HttpResponse, JsonResponse
 from cryptapi.forms import CallbackForm
 from cryptapi.dispatchers import CallbackDispatcher
+from cryptapi.models import Payment, Request
+import datetime
 
 
 def callback(_r):
-
     result = _r.GET.get('result')
     form = CallbackForm(data=_r.GET)
 
@@ -40,3 +42,42 @@ def callback(_r):
             return HttpResponse('*ok*')
 
     return HttpResponse('Error')
+
+
+def status(_r):
+    request_id = _r.GET.get('request_id')
+
+    request = Request.objects.get(id=request_id)
+    payment_qs = Payment.objects.all().filter(request_id=request_id)
+
+    already_paid = 0
+    remaining = request.value_requested
+    is_paid = 0
+    is_pending = 0
+
+    if request.status == 'done':
+        is_paid = 1
+
+    if request.status == 'pending':
+        is_pending = 1
+
+    payments = [{
+        'coin': p.request.provider.get_coin_display(),
+        'value_coin': p.value_paid_coin.normalize(),
+        'timestamp': datetime.datetime.strftime(p.timestamp, '%d/%m/%y %H:%M:%S'),
+    } for p in payment_qs]
+
+    for p in payments:
+        already_paid += p['value_coin']
+        remaining -= p['value_coin']
+
+    data = {
+        'is_paid': is_paid,
+        'is_pending': is_pending,
+        'crypto_total': Decimal(request.value_requested).normalize(),
+        'already_paid': Decimal(already_paid).normalize(),
+        'remaining': Decimal(remaining).normalize(),
+        'fiat_symbol': '€',
+    }
+
+    return JsonResponse({'status': 'success', 'data': data, 'payments': payments})

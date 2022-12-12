@@ -18,7 +18,7 @@ setup(
 
     author="CryptAPI",
 
-    author_email="cryptapi@protonmail.com",
+    author_email="info@cryptapi.io",
     install_requires=[
         'django',
         'requests',

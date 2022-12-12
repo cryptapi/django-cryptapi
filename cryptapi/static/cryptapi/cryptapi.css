@@ -1,0 +1,602 @@
+.ca_payment-panel {
+    max-width: 700px;
+    width: 100%;
+    margin: 60px auto;
+}
+
+.ca_payment_details {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.ca_details_copy {
+    padding: 7px 10px;
+    margin: 0 5px;
+    background: #e0e0e0 !important;
+    font-weight: bold;
+    color: #000 !important;
+    border: 0;
+}
+
+.ca_details_box {
+    width: 100%;
+}
+
+.ca_details_text {
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: .045em;
+}
+
+.ca_qrcode_wrapper {
+    max-width: 100%;
+    margin: 0 auto 26px;
+}
+
+.ca_qrcode_wrapper .inner-wrapper {
+    background: #FAFAFA;
+    border-radius: 15px;
+    padding: 10px 10px 0 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.ca_qrcode_wrapper .inner-wrapper img {
+    mix-blend-mode: multiply;
+}
+
+.ca_qrcode_buttons {
+    display: flex;
+    flex-direction: row;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: 10px;
+}
+
+.ca_qrcode_buttons button {
+    display: inline-block;
+    width: 100%;
+    height: 42px;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: .045em;
+    background: #E0E0E0 !important;
+    color: #000 !important;
+    border: 0 !important;
+}
+
+.ca_qrcode_buttons button.active {
+    background-color: #FAFAF9 !important;
+    color: #000;
+    box-shadow: none !important;
+}
+
+.ca_details_input {
+    position: relative;
+    display: block;
+    height: 75px;
+    background-color: #FAFAFA;
+    border-radius: 50px;
+    margin: 26px 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.ca_details_input .ca_copy .ca_tooltip {
+    left: 25%;
+}
+
+.ca_details_input span {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    height: 100%;
+    padding: 0 8%;
+    line-height: 20px;
+    white-space: normal;
+    line-break: anywhere;
+}
+
+.ca_copy {
+    position: relative;
+}
+
+.ca_copy .ca_copy_icon_tooltip {
+    visibility: hidden;
+    width: 100px;
+    background-color: rgba(66, 66, 66, .8);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0 !important;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -50px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+}
+
+.ca_copy .ca_copy_icon_tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.ca_copy:hover .ca_copy_icon_tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.ca_copy_icon {
+    position: absolute;
+    top: calc(50% - 15px);
+    width: 24px;
+    height: 28px;
+    right: 25px;
+    padding: 0 !important;
+    background-size: contain !important;
+    background: transparent url(ca_copy_icon.svg) no-repeat !important;
+    border: 0 !important;
+}
+
+.ca_copy_icon_tooltip {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    visibility: hidden;
+}
+
+.ca_loader {
+    position: absolute;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    background-image: url(ca_loader.svg);
+    background-size: contain;
+    top: calc(50% - 25px);
+    bottom: 0;
+    background-repeat: no-repeat;
+}
+
+.ca_loader_payment_processing {
+    background-image: url(ca_loader.svg);
+    background-size: 150%;
+    background-repeat: no-repeat;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    background-position: center;
+}
+
+.ca_buttons_container {
+    display: flex;
+    justify-content: center;
+    padding: 13px 0;
+    background-color: #FAFAFA;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    max-width: 180px;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 50px;
+}
+
+.ca_buttons_container a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #2695D3;
+    font-weight: 600;
+    letter-spacing: .045em;
+    width: 140px;
+    height: 38px;
+    border-radius: 50px;
+    border: 3px solid #2695D3;
+    font-size: 13px;
+    margin: 0 6px;
+    text-decoration: none !important;
+}
+
+.ca_buttons_container a:hover {
+    color: #FFF;
+    background-color: #2695D3;
+}
+
+.ca_buttons_container a span {
+    display: none;
+    white-space: nowrap;
+}
+
+.ca_buttons_container a span.active {
+    display: block;
+}
+
+.ca_branding {
+    margin-top: 26px;
+    text-align: center;
+}
+
+.ca_branding a {
+    text-decoration: none;
+}
+
+.ca_branding span {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 4px;
+    color: #757575;
+    letter-spacing: 1px;
+}
+
+.ca_branding img {
+    display: inline-block !important;
+}
+
+.ca_progress {
+    display: flex;
+    margin-top: 52px;
+    flex-wrap: wrap;
+}
+
+.ca_progress .ca_progress_icon {
+    position: relative;
+    width: 33.33%;
+    flex: 0 0 33.33%;
+    text-align: center;
+}
+
+.ca_notification_text {
+    display: block;
+    width: 100%;
+    flex: 0 0 100%;
+    margin-top: 35px;
+    text-align: center;
+}
+
+.ca_notification_text span {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 14px;
+}
+
+.ca_progress .ca_progress_icon.waiting_network {
+    position: relative;
+}
+
+.ca_progress .ca_progress_icon.waiting_payment:before,
+.ca_progress .ca_progress_icon.waiting_network:before {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    background: #2695D3 !important;
+    top: 28%;
+    right: -18%;
+}
+
+.ca_progress .ca_progress_icon.waiting_payment.done:before,
+.ca_progress .ca_progress_icon.waiting_network.done:before {
+    background: #66BB6A !important;
+}
+
+.ca_progress .ca_progress_icon svg {
+    margin: 0 auto 12px;
+}
+
+.ca_progress .ca_progress_icon.done svg path {
+    fill: #66BB6A;
+}
+
+.ca_progress .ca_progress_icon p {
+    width: 154px;
+    margin: 0 auto;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.ca_payment_confirmed {
+    width: 100%;
+}
+
+.ca_payment_confirmed h2,
+.ca_payment_processing h2,
+.ca_payment_cancelled h2 {
+    display: block;
+    text-align: center;
+    font-size: 28px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 26px;
+    margin-bottom: 15px;
+}
+
+.ca_payment_confirmed .ca_payment_confirmed_icon,
+.ca_payment_processing .ca_payment_confirmed_icon,
+.ca_payment_cancelled .ca_payment_cancelled_icon {
+    text-align: center !important;
+    margin-bottom: 15px;
+}
+
+.ca_payment_confirmed .ca_payment_confirmed_icon svg,
+.ca_payment_cancelled .ca_payment_cancelled_icon svg {
+    max-width: 100% !important;
+    width: 100px !important;
+    margin: 0 auto !important;
+    display: inline-block !important;
+}
+
+.ca_payment_processing h5 {
+    text-align: center;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: -10px;
+}
+
+.ca_payment_notification {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.ca_history .ca_history_fill {
+    border-radius: 15px;
+    border: 0 !important;
+    font-size: 14px;
+    text-align: center;
+    width: 70%;
+    margin: 20px auto;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    border-collapse: collapse;
+
+}
+
+.ca_history .ca_history_fill th {
+    border: 0;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.ca_history .ca_history_fill td {
+    border: 0;
+    font-size: 14px;
+    text-align: center;
+    padding: 8px 0;
+    overflow: auto;
+}
+
+.ca_notification_cancel {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.ca_history_date {
+    font-size: 10px;
+    display: block;
+}
+
+.ca_time_refresh {
+    display: block;
+    text-align: center;
+    margin: 10px 0 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 768.98px) {
+    .ca_details_input span {
+        font-size: 16px;
+        word-break: break-all;
+    }
+
+    .ca_copy_icon {
+        width: 17px;
+        height: 20px;
+        right: 20px;
+        top: calc(50% - 11px);
+    }
+
+    .ca_progress .ca_progress_icon.waiting_network:before,
+    .ca_progress .ca_progress_icon.waiting_payment:before {
+        width: 60px !important;
+    }
+
+    .ca_progress .ca_progress_icon.waiting_network:before {
+        right: -17%;
+    }
+
+    .ca_progress .ca_progress_icon.waiting_payment:before {
+        right: -17%;
+    }
+}
+
+@media screen and (max-width: 575.98px) {
+    .ca_details_copy {
+        display: block;
+        margin: 12px auto;
+    }
+
+    .ca_details_input span {
+        padding: 0 60px 0 30px;
+        font-size: 14px;
+    }
+
+    .ca_progress {
+        flex-direction: column;
+    }
+
+    .ca_progress .ca_progress_icon {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+
+    .ca_progress .ca_progress_icon.waiting_payment:before,
+    .ca_progress .ca_progress_icon.waiting_network:before {
+        width: 2px !important;
+        height: 40px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: unset;
+        bottom: -55px;
+    }
+
+    .ca_progress .ca_progress_icon.waiting_network {
+        margin: 70px 0;
+    }
+
+    .ca_details_input {
+        margin-bottom: 64px;
+    }
+
+    .ca_loader {
+        top: unset;
+        bottom: -56px;
+        right: 0;
+        left: 0;
+        margin: 0 auto;
+    }
+
+    .ca_history .ca_history_fill {
+        width: 100%;
+    }
+}
+
+.ca_payment-panel.dark {
+    color: #fafafa;
+}
+
+.ca_payment-panel.dark .ca_details_input {
+    background-color: #424242 !important;
+    color: #FAFAFA !important;
+}
+
+.ca_payment-panel.dark .ca_loader {
+    filter: invert(1);
+}
+
+.ca_payment-panel.dark .ca_details_copy {
+    background-color: #424242 !important;
+    color: #FAFAFA !important;
+}
+
+.ca_payment-panel.dark .ca_copy .ca_copy_icon_tooltip {
+    background-color: rgba(245, 245, 245, 1) !important;
+    color: #121212 !important;
+}
+
+.ca_payment-panel.dark .ca_copy .ca_copy_icon_tooltip::after {
+    border-color: rgba(245, 245, 245, 1) transparent transparent transparent !important;
+}
+
+.ca_payment-panel.dark .ca_buttons_container {
+    background-color: #424242 !important;
+    color: #FAFAFA !important;
+}
+
+.ca_payment-panel.dark .ca_buttons_container a {
+    color: #6ac5ff !important;
+    border: 3px solid #6ac5ff !important;
+}
+
+.ca_payment-panel.dark .ca_buttons_container a:hover {
+    background-color: #6ac5ff !important;
+    color: #212121 !important;
+}
+
+.ca_payment-panel.dark .ca_copy_icon {
+    background: transparent url(ca_copy_icon_dark.svg) no-repeat !important
+}
+
+.ca_payment-panel.dark .ca_progress_icon svg path {
+    fill: #6ac5ff !important;
+}
+
+.ca_payment-panel.dark .ca_progress .ca_progress_icon.waiting_payment:before,
+.ca_payment-panel.dark .ca_progress .ca_progress_icon.waiting_network:before {
+    background: #6ac5ff !important;
+}
+
+.ca_payment-panel.dark .ca_payment_confirmed h2,
+.ca_payment-panel.dark .ca_payment_cancelled h2 {
+    color: #FFF;
+}
+
+@media (prefers-color-scheme: dark) {
+    .ca_payment-panel.auto {
+        color: #fafafa;
+    }
+
+    .ca_payment-panel.auto .ca_details_input {
+        background-color: #424242 !important;
+        color: #FAFAFA !important;
+    }
+
+    .ca_payment-panel.auto .ca_loader {
+        filter: invert(1);
+    }
+
+    .ca_payment-panel.auto .ca_details_copy {
+        background-color: #424242 !important;
+        color: #FAFAFA !important;
+    }
+
+    .ca_payment-panel.auto .ca_copy .ca_copy_icon_tooltip {
+        background-color: rgba(245, 245, 245, 1) !important;
+        color: #121212 !important;
+    }
+
+    .ca_payment-panel.auto .ca_copy .ca_copy_icon_tooltip::after {
+        border-color: rgba(245, 245, 245, 1) transparent transparent transparent !important;
+    }
+
+    .ca_payment-panel.auto .ca_buttons_container {
+        background-color: #424242 !important;
+        color: #FAFAFA !important;
+    }
+
+    .ca_payment-panel.auto .ca_buttons_container a {
+        color: #6ac5ff !important;
+        border: 3px solid #6ac5ff !important;
+    }
+
+    .ca_payment-panel.auto .ca_buttons_container a:hover {
+        background-color: #6ac5ff !important;
+        color: #212121 !important;
+    }
+
+    .ca_payment-panel.auto .ca_copy_icon {
+        background: transparent url(ca_copy_icon_dark.svg) no-repeat !important
+    }
+
+    .ca_payment-panel.auto .ca_progress_icon svg path {
+        fill: #6ac5ff !important;
+    }
+
+    .ca_payment-panel.auto .ca_progress .ca_progress_icon.waiting_payment:before,
+    .ca_payment-panel.auto .ca_progress .ca_progress_icon.waiting_network:before {
+        background: #6ac5ff !important;
+    }
+
+    .ca_payment-panel.auto .ca_payment_confirmed h2, .ca_payment-panel.auto .ca_payment_cancelled h2 {
+        color: #FFF;
+    }
+}

@@ -304,3 +304,6 @@ Contact us @ https://cryptapi.io/contacts/
 * Added store application to provide examples on how to implement
 * General improvements
 * Fixed bugs
+
+#### 0.4.1
+* Minor bugfixes

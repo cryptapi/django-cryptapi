@@ -52,12 +52,15 @@ def get_coins():
 def get_choices_coins():
     coins = ''
 
-    for ticker, coin in get_coins().items():
-        y = list(coins)
-        y.append((ticker, coin))
-        coins = tuple(y)
+    try:
+        for ticker, coin in get_coins().items():
+            y = list(coins)
+            y.append((ticker, coin))
+            coins = tuple(y)
 
-    return coins
+        return coins
+    except:
+        return ()
 
 
 def build_query_string(data):

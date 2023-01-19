@@ -26,12 +26,12 @@ def callback(_r):
         # Payment data
         payment = {
             'txid_in': form.cleaned_data.get('txid_in'),
-            'value_paid': form.cleaned_data.get('value'),
             'value_paid_coin': form.cleaned_data.get('value_coin'),
             'confirmations': form.cleaned_data.get('confirmations'),
             'txid_out': form.cleaned_data.get('txid_out'),
-            'value_received': form.cleaned_data.get('value_forwarded'),
-            'value_received_coin': form.cleaned_data.get('value_forwarded_coin')
+            'value_received_coin': form.cleaned_data.get('value_forwarded_coin'),
+            'value_price': form.cleaned_data.get('price'),
+            'value_fee_coin': form.cleaned_data.get('fee_coin')
         }
 
         raw_data = json.dumps(_r.GET)

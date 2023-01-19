@@ -32,7 +32,7 @@ class CallbackDispatcher:
                     sender=self.__class__,
                     order_id=request.order_id,
                     payment=payment,
-                    value=self.payment['value_paid']
+                    value=self.payment['value_paid_coin']
                 )
 
                 request.status = 'pending'
@@ -45,12 +45,12 @@ class CallbackDispatcher:
                     sender=self.__class__,
                     order_id=request.order_id,
                     payment=payment,
-                    value=self.payment['value_paid']
+                    value=self.payment['value_paid_coin']
                 )
 
                 if request.status not in ['received', 'done']:
 
-                    total_received = self.payment['value_paid']
+                    total_received = self.payment['value_paid_coin']
 
                     if total_received < request.value_requested:
                         total_received = request.total_confirmed

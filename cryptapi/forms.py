@@ -23,12 +23,12 @@ class CallbackForm(forms.Form):
     # Payment data
     txid_in = forms.CharField(max_length=256)
     confirmations = forms.IntegerField()
-    value = forms.DecimalField(max_digits=65, decimal_places=0)
     value_coin = forms.DecimalField(max_digits=65, decimal_places=18)
+    price = forms.DecimalField(max_digits=65, decimal_places=18)
+    fee_coin = forms.DecimalField(max_digits=65, decimal_places=18)
 
     # May be blank
     txid_out = forms.CharField(max_length=256, required=False)
-    value_forwarded = forms.DecimalField(max_digits=65, decimal_places=0, required=False)
     value_forwarded_coin = forms.DecimalField(max_digits=65, decimal_places=18, required=False)
 
 

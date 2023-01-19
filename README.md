@@ -307,3 +307,8 @@ Contact us @ https://cryptapi.io/contacts/
 
 #### 0.4.1
 * Minor bugfixes
+
+#### 0.4.2
+* Minor fixes
+* Signals now use the value_coin
+* Removed deprecated fields from the payment model

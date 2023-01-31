@@ -14,7 +14,7 @@ setup(
 
     version=cryptapi.__version__,
 
-    packages=find_packages(),
+    packages=find_packages(exclude=['django_store']),
 
     author="CryptAPI",
 
@@ -32,7 +32,7 @@ setup(
     url='https://github.com/cryptapi/django-cryptapi',
     classifiers=[
         "Programming Language :: Python",
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - stable",
         "Framework :: Django",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",

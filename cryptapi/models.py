@@ -51,7 +51,7 @@ class Request(models.Model):
         qs = self.payment_set.all()
 
         if qs.exists():
-            return qs.aggregate(sum=Sum('value_paid')).get('sum', 0)
+            return qs.aggregate(sum=Sum('value_paid_coin')).get('sum', 0)
 
         return 0
 
@@ -60,7 +60,7 @@ class Request(models.Model):
         qs = self.payment_set.filter(pending=True)
 
         if qs.exists():
-            return qs.aggregate(sum=Sum('value_paid')).get('sum', 0)
+            return qs.aggregate(sum=Sum('value_paid_coin')).get('sum', 0)
 
         return 0
 
@@ -69,7 +69,7 @@ class Request(models.Model):
         qs = self.payment_set.filter(pending=False)
 
         if qs.exists():
-            return qs.aggregate(sum=Sum('value_paid')).get('sum', 0)
+            return qs.aggregate(sum=Sum('value_paid_coin')).get('sum', 0)
 
         return 0
 

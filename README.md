@@ -312,3 +312,6 @@ Contact us @ https://cryptapi.io/contacts/
 * Minor fixes
 * Signals now use the value_coin
 * Removed deprecated fields from the payment model
+
+#### 0.4.3
+* Minor fixes

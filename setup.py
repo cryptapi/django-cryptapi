@@ -8,21 +8,17 @@ import cryptapi
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+with open("requirements.txt") as f:
+    required = f.read().splitlines()
+
 setup(
 
     name='django-cryptapi',
-
     version=cryptapi.__version__,
-
     packages=find_packages(exclude=['django_store']),
-
     author="CryptAPI",
-
     author_email="info@cryptapi.io",
-    install_requires=[
-        'django',
-        'requests',
-    ],
+    install_requires=required,
     description="Django implementation of CryptAPI's payment gateway",
     long_description_content_type="text/markdown",
     long_description=long_description,

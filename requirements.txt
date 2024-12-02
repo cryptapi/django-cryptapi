@@ -1,2 +1,2 @@
-django>=3
-requests>=2.20
+django>=3.2.25
+requests>=2.32.0

@@ -315,3 +315,11 @@ Contact us @ https://cryptapi.io/contacts/
 
 #### 0.4.3
 * Minor fixes
+
+
+#### 0.4.4
+* Minor fixes
+
+
+#### 0.4.5
+* Minor fixes

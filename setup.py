@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='django-cryptapi',
-    version='0.4.7',
+    version='0.4.8',
     packages=find_packages(exclude=['django_store']),
     author="CryptAPI",
     author_email="info@cryptapi.io",

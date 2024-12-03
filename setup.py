@@ -6,16 +6,16 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open("requirements.txt") as f:
-    required = f.read().splitlines()
-
 setup(
     name='django-cryptapi',
-    version='0.4.5',
+    version='0.4.6',
     packages=find_packages(exclude=['django_store']),
     author="CryptAPI",
     author_email="info@cryptapi.io",
-    install_requires=required,
+    install_requires=[
+        'django',
+        'requests',
+    ],
     description="Django implementation of CryptAPI's payment gateway",
     long_description_content_type="text/markdown",
     long_description=long_description,

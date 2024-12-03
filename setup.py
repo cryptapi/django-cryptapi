@@ -8,10 +8,11 @@ with open("README.md", "r") as fh:
 
 setup(
     name='django-cryptapi',
-    version='0.4.6',
+    version='0.4.7',
     packages=find_packages(exclude=['django_store']),
     author="CryptAPI",
     author_email="info@cryptapi.io",
+    include_package_data=True,
     install_requires=[
         'django',
         'requests',
@@ -19,7 +20,6 @@ setup(
     description="Django implementation of CryptAPI's payment gateway",
     long_description_content_type="text/markdown",
     long_description=long_description,
-    include_package_data=True,
     url='https://github.com/cryptapi/django-cryptapi',
     classifiers=[
         "Programming Language :: Python",

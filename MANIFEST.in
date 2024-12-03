@@ -1,0 +1,2 @@
+recursive-include cryptapi/templates *
+recursive-include store/templates *
